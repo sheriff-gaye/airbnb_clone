@@ -1,15 +1,15 @@
 "use client"
-
-import { User } from "@prisma/client";
 import Container from "../Container";
+import Categories from "./Categories";
 import Logo from './Logo';
 import Serach from "./Search";
 import UserMenu from "./UserMenu";
+import { SafeUser } from "@/app/types";
 
 
 
 interface NavbarProps{
-    currentUser?:User | null
+    currentUser?:SafeUser | null
 }
 
 const NavBar = ({currentUser}:NavbarProps) => {
@@ -26,6 +26,7 @@ const NavBar = ({currentUser}:NavbarProps) => {
             </div>
         </Container>
       </div>
+      <Categories/>
     </div>
   );
 };
