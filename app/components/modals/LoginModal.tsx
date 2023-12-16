@@ -1,6 +1,6 @@
 "use client";
 import useLoginModal from "@/app/hooks/useLoginModal";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { FieldValues, useForm, SubmitHandler } from "react-hook-form";
 import useRegisterModal from "@/app/hooks/useRegisterModal";
 import Modal from "./Modal";
@@ -49,6 +49,13 @@ const LoginModal = () => {
       }
     });
   };
+
+  const toggle=useCallback(()=>{
+    loginModal.onClose();
+    registerModal.onOpen();
+   
+  },[registerModal,loginModal])
+  
   const bodyContent = (
     <div className="flex flex-col gap-4">
       <Heading title="Welcome Back" subtitle=" Login to your account" center />
@@ -93,7 +100,7 @@ const LoginModal = () => {
           <div>Dont have an Account ?</div>
           <div
             className="text-neutral-800 hover:underline  cursor-pointer"
-            onClick={registerModal.onClose}
+            onClick={toggle}
           >
             Register
           </div>
@@ -101,6 +108,8 @@ const LoginModal = () => {
       </div>
     </div>
   );
+
+ 
 
   return (
     <Modal
