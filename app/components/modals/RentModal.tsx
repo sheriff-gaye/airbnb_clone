@@ -7,6 +7,12 @@ import Heading from "../Heading";
 import { categories } from "../navbar/Categories";
 import CategoryInput from "../inputs/CategoryInput";
 import { FieldValues, useForm } from "react-hook-form";
+import CountrySelect from "../inputs/CountrySelect";
+import dynamic from "next/dynamic";
+
+import Map from "../Map";
+import Counter from "../inputs/Counter";
+import ImageUpload from '../inputs/ImageUpload';
 
 const RentModal = () => {
   enum STEPS {
@@ -38,23 +44,35 @@ const RentModal = () => {
       roomCount: 1,
       bathroomCount: 1,
       imageSrc: "",
-      price:1,
-      title:'',
-      description:''
+      price: 1,
+      title: "",
+      description: ""
     }
   });
 
+  const category = watch("category");
+  const location = watch("location");
+  const guestCount = watch("guestCount");
+  const roomCount = watch("roomCount");
+  const bathroomCount = watch("bathroomCount");
+  const imageSrc = watch('imageSrc');
 
-  const category=watch('category');
 
-  const setCustomValue=(id:string,value:any)=>{
-    setValue(id,value,{
-        shouldValidate:true,
-        shouldDirty:true,
-        shouldTouch:true
-    }
-    )
-  }
+  const Map = useMemo(
+    () =>
+      dynamic(() => import("../Map"), {
+        ssr: false
+      }),
+    [location]
+  );
+
+  const setCustomValue = (id: string, value: any) => {
+    setValue(id, value, {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true
+    });
+  };
 
   const onBack = () => {
     setStep((value) => value - 1);
@@ -78,7 +96,7 @@ const RentModal = () => {
     return "Back";
   }, [step, STEPS.CATEGORY]);
 
-  const bodyContent = (
+  let bodyContent = (
     <div className="flex flex-col gap-8">
       <Heading
         title="Which of these best describe your plcae"
@@ -88,8 +106,8 @@ const RentModal = () => {
         {categories.map((item) => (
           <div key={item.label}>
             <CategoryInput
-              onClick={(category=>setCustomValue('category',category))}
-              selected={category===item.label}
+              onClick={(category) => setCustomValue("category", category)}
+              selected={category === item.label}
               label={item.label}
               icon={item.icon}
             />
@@ -99,11 +117,70 @@ const RentModal = () => {
     </div>
   );
 
+  if (step == STEPS.LOCATION) {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <Heading
+          title="where is your place located ?"
+          subtitle="Help guest find you "
+        />
+        <CountrySelect
+          onChange={(value) => setCustomValue("location", value)}
+        />
+        <Map center={location?.latlng} />
+      </div>
+    );
+  }
+
+  if (step === STEPS.INFO) {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <Heading
+          title="Share some basic about your place "
+          subtitle="What amenities do you have ?"
+        />
+        <Counter
+          onChange={(value) => setCustomValue("guestCount", value)}
+          value={guestCount}
+          title="Guest"
+          subtitle="How many Guest do you allow"
+        />
+        <hr />
+        <Counter
+          onChange={(value) => setCustomValue("roomCount", value)}
+          value={roomCount}
+          title="Rooms"
+          subtitle="How many rooms do you have?"
+        />
+        <hr />
+        <Counter
+          onChange={(value) => setCustomValue("bathroomCount", value)}
+          value={bathroomCount}
+          title="Bathrooms"
+          subtitle="How many bathrooms do you have?"
+        />
+      </div>
+    );
+  }
+
+  if (step === STEPS.IMAGES) {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <Heading
+          title="Add a photo of your place "
+          subtitle="show guest what your place looks like"
+        />
+
+        <ImageUpload  onChange={(value) => setCustomValue('imageSrc', value)}
+          value={imageSrc}/>
+      </div>
+    );
+  }
   return (
     <Modal
       actionLabel={actionLabel}
       secondaryActionLabel={secondaryActionLabel}
-      onSubmit={rentModal.onClose}
+      onSubmit={onNext}
       title="Airbnb your Home"
       disabled={isLoading}
       isOpen={rentModal.isOpen}
