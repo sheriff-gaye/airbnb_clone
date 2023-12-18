@@ -13,6 +13,7 @@ import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import LisitingReservation from '../../components/listings/LisitingReservation';
+import { Range } from "react-date-range";
 
 const initialDateRange = {
   startDate: new Date(),
@@ -58,7 +59,7 @@ const ListingClient = ({
 
   const [isLoading, setIsLoading] = useState(false);
   const [totalPrice, setTotalPrice] = useState(listing.price);
-  const [dateRange, setDateRange] = useState(initialDateRange);
+  const [dateRange, setDateRange] = useState<Range>(initialDateRange);
 
   const onCreateReservation = useCallback(() => {
     if (!currentUser) {
@@ -88,14 +89,18 @@ const ListingClient = ({
 
   useEffect(() => {
     if (dateRange.startDate && dateRange.endDate) {
-      const dayCount = differenceInDays(dateRange.startDate, dateRange.endDate);
-      if (dayCount & listing.price) {
+      const dayCount = differenceInDays(
+        dateRange.endDate, 
+        dateRange.startDate
+      );
+      
+      if (dayCount && listing.price) {
         setTotalPrice(dayCount * listing.price);
       } else {
         setTotalPrice(listing.price);
       }
     }
-  }, [dateRange,listing.price]);
+  }, [dateRange, listing.price]);
 
   return (
     <Container>
