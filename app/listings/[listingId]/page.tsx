@@ -1,9 +1,36 @@
-import React from 'react'
 
-const page = () => {
+import { Listing } from '@prisma/client';
+import getLisitingById from '@/app/actions/getLisitingById';
+import ClientOnly from '@/app/components/ClientOnly';
+import EmptyState from '@/app/components/EmptyState';
+import { getCurrentUser } from '@/app/actions/getCurrentUser';
+import ListingClient from './ListingClient';
+
+interface Iparams{
+  listingId?:string
+}
+
+const ListingPage = async({params}:{params:Iparams}) => {
+
+  const listing=await getLisitingById(params);
+
+  const currentUser=await  getCurrentUser();
+
+  if(!listing){
+    return(
+      <ClientOnly>
+        <EmptyState/>
+      </ClientOnly>
+    )
+  }
+
+
+
   return (
-    <div>single lsiitng page</div>
+   <ClientOnly>
+    <ListingClient listing={listing} currentUser={currentUser}/>
+   </ClientOnly>
   )
 }
 
-export default page
+export default ListingPage

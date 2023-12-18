@@ -1,6 +1,5 @@
 import prisma from '@/app/libs/prismadb';
 
-
 interface Iparams {
     listingId?: string
 }
@@ -30,7 +29,7 @@ export default async function getLisitingById(params: Iparams) {
                 ...listing.user,
                 createdAt: listing.user.createdAt.toISOString(),
                 updatedAt: listing.user.updatedAt.toISOString(),
-                emailVerified: listing.user?.emailVerified?.toISOString()
+                emailVerified: listing.user?.emailVerified?.toISOString() || null
             }
         }
 
