@@ -1,6 +1,4 @@
-import { Listing } from '@prisma/client';
 import prisma from '@/app/libs/prismadb';
-
 
 interface Iparams {
     listingId?: string

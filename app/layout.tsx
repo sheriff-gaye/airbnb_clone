@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
-import "./globals.css";
 import NavBar from "./components/navbar/navbar";
 import ClientOnly from "./components/ClientOnly";
-import Modal from "./components/modals/Modal";
 import RegisterModal from "./components/modals/RegisterModal";
 import ToastProvider from "./providers/ToastProvider";
 import LoginModal from "./components/modals/LoginModal";
 import { getCurrentUser } from "./actions/getCurrentUser";
 import RentModal from "./components/modals/RentModal";
+import "./globals.css";
 
 const font = Nunito({ subsets: ["latin"] });
 
