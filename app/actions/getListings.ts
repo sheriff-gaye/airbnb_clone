@@ -14,7 +14,8 @@ export interface IListingparams {
 export default async function getListings(params: IListingparams) {
   try {
 
-    const { userId,
+    const { 
+      userId,
       roomCount,
       guestCount,
       bathroomCount,
