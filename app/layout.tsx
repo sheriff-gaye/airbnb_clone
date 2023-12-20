@@ -26,9 +26,8 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={font.className}>
-        
         <ClientOnly>
-        <NavBar currentUser={currentUser} />
+          <NavBar currentUser={currentUser} />
           <SearchModal />
           <RentModal />
           <LoginModal />

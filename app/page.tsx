@@ -21,10 +21,11 @@ const Home= async ({searchParams}:HomeProps)=> {
     return(
       <ClientOnly>
 
-        <EmptyState/>
+        <EmptyState showReset/>
       </ClientOnly>
     )
   }
+
   return (
    <ClientOnly>
     <Container>
