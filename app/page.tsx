@@ -1,3 +1,5 @@
+
+
 import Container from "@/app/components/Container";
 import ListingCard from "@/app/components/listings/ListingCard";
 import EmptyState from "@/app/components/EmptyState";
@@ -12,7 +14,7 @@ interface HomeProps {
   searchParams: IListingsParams
 };
 
-const Home = async ({ searchParams }: HomeProps) => {
+async function Home ({ searchParams }: HomeProps)  {
   const listings = await getListings(searchParams);
   const currentUser = await getCurrentUser();
 
