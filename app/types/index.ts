@@ -23,3 +23,5 @@ export type SafeReservation = Omit<
   endDate: string;
   listing: SafeListing;
 };
+
+
